@@ -1,4 +1,4 @@
-# NetForge 2.0
+# NetForge 
 
 NetForge is a Linux-first **C17 network diagnostics and host-inspection toolkit** built to demonstrate systems programming: POSIX sockets, non-blocking I/O, pthread concurrency, Linux `epoll`, DNS, HTTP, TLS/OpenSSL, CIDR discovery, structured output, and latency statistics.
 
