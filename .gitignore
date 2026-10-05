@@ -1,0 +1,11 @@
+build/
+*.o
+*.a
+*.so
+*.db
+*.log
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Stor

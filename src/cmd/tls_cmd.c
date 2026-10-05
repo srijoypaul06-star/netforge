@@ -1,0 +1,6 @@
+#include "netforge/app.h"
+#include "netforge/tls.h"
+#include "netforge/output.h"
+#include <stdio.h>
+#include <stdlib.h>
+int nf_cmd_tls(int argc,char**argv,const nf_config_t*cfg){if(argc<2){fprintf(stderr,"usage: netforge tls <host> [port]\n");return NF_ERR_USAGE;}int port=443;if(argc>=3){port=atoi(argv[2]);if(port<1||port>65535)return NF_ERR_USAGE;}nf_tls_result_t r;if(nf_tls_probe(argv[1],port,cfg->timeout_ms,&r)!=0){fprintf(stderr,"TLS handshake failed\n");return NF_ERR_NETWORK;}if(nf_output_mode()==NF_OUTPUT_JSON){printf("{\"host\":");nf_output_json_escape(stdout,argv[1]);printf(",\"port\":%d,\"latency_ms\":%d,\"protocol\":",port,r.latency_ms);nf_output_json_escape(stdout,r.protocol);printf(",\"cipher\":");nf_output_json_escape(stdout,r.cipher);printf(",\"verify_result\":%ld,\"subject\":",r.verify_result);nf_output_json_escape(stdout,r.subject);printf(",\"issuer\":");nf_output_json_escape(stdout,r.issuer);printf(",\"not_before\":");nf_output_json_escape(stdout,r.not_before);printf(",\"not_after\":");nf_output_json_escape(stdout,r.not_after);puts("}");}else{printf("\nNetForge TLS Inspection — %s:%d\n\nProtocol: %s\nCipher:   %s\nLatency:  %d ms\nVerify:   %ld\nSubject:  %s\nIssuer:   %s\nValid:    %s -> %s\n",argv[1],port,r.protocol,r.cipher,r.latency_ms,r.verify_result,r.subject,r.issuer,r.not_before,r.not_after);}return NF_OK;}
